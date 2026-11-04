@@ -1,0 +1,41 @@
+plugins {
+    id 'com.android.application'
+}
+
+// The product version has one source: app/Cargo.toml (the tray app, the installer and this APK all use it).
+def cargoToml = new File(rootDir, '../../app/Cargo.toml').text
+def appVersion = (cargoToml =~ /(?m)^version\s*=\s*"(\d+)\.(\d+)\.(\d+)"/)
+if (!appVersion.find()) { throw new GradleException('no version = "x.y.z" in app/Cargo.toml') }
+def (major, minor, patch) = [appVersion.group(1), appVersion.group(2), appVersion.group(3)].collect { it as int }
+
+// Native-only app: the Rust cdylib (cargo ndk -> src/main/jniLibs/<abi>/libtunnelrez_tv.so) runs as
+// android.app.NativeActivity. No Java/Kotlin sources.
+android {
+    // dev.tunnelrez.tv is a new app on the TV: the old dev.slipstream.tv stays until it is uninstalled (README).
+    namespace 'dev.tunnelrez.tv'
+    // PINNED: see docs/PINNED.md (compileSdk 34, minSdk 26, NDK 29.0.14206865)
+    compileSdk 34
+    ndkVersion '29.0.14206865'
+
+    defaultConfig {
+        applicationId 'dev.tunnelrez.tv'
+        minSdk 26
+        targetSdk 34
+        versionCode major * 10000 + minor * 100 + patch
+        versionName "${major}.${minor}.${patch}"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            // Sideloaded over ADB: signed with the debug key.
+            signingConfig signingConfigs.debug
+        }
+    }
+
+    packagingOptions {
+        jniLibs {
+            useLegacyPackaging true
+        }
+    }
+}

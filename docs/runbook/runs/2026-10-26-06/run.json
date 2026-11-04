@@ -1,0 +1,78 @@
+{
+  "id": "2026-10-26-06",
+  "title": "h264 3840x2160@60 NVIDIA NVENC native, 150 Mb/s (app log)",
+  "config": {
+    "codec": "h264",
+    "resolution": "3840x2160",
+    "fps": 60,
+    "encoder": "NVIDIA NVENC native",
+    "requested_mbps": 150.0,
+    "configured_mbps": 150.0,
+    "network": "PC Wi-Fi 6 GHz 802.11ax, 2162/1297 Mb/s, signal 83 %",
+    "content": "",
+    "sender_build": "slipstream-send.exe (app 0.1.0)",
+    "receiver_build": ""
+  },
+  "method": "App logger (Log switch), one sample per second, 48 s; TV-side STATS as the sender received them; the first seconds are start-up and are skipped in the summary.",
+  "summary": {
+    "seconds": 44,
+    "decoder": "OMX.MTK.VIDEO.DECODER.AVC",
+    "fps_out": {
+      "median": 56.9,
+      "p95": 58.9,
+      "max": 59.9
+    },
+    "recv_mbps": {
+      "median": 142.2
+    },
+    "decode_ms_p50": {
+      "median": 17.7,
+      "p95": 18.0,
+      "max": 18.2
+    },
+    "decode_ms_p99": {
+      "median": 20.2,
+      "p95": 22.0,
+      "max": 25.6
+    },
+    "tv_latency_ms": null,
+    "arrival_gaps_s": {
+      "median": 1.0,
+      "p95": 4.0,
+      "max": 8.0
+    },
+    "arrival_ms_max": {
+      "median": 31.2,
+      "p95": 103.3,
+      "max": 105.9
+    },
+    "decoder_wait_p99": {
+      "median": 0.8,
+      "p95": 1.4,
+      "max": 2.7
+    },
+    "dropped_total": 0,
+    "late_total": 0,
+    "rxq_dropped": 0,
+    "idr_requests_max": 0.0,
+    "gpu": {
+      "core_pct_avg": 9.0,
+      "encoder_pct_avg": 29.0,
+      "clock_mhz": "810-2257",
+      "power_w": "15.555-40.818"
+    },
+    "pc": {
+      "capture_ms": 0.0,
+      "convert_ms": 0.3,
+      "encode_ms": 7.0,
+      "send_ms_p99": 0.3,
+      "capture_to_send_ms": 8.1,
+      "encoder_fps": 56.7,
+      "sent_mbps": 141.7,
+      "cpu_pct": 8.97,
+      "rtt_ms": 2.0,
+      "e2e_latency_ms": 37.1
+    }
+  },
+  "notes": "From the app log, 48 s"
+}
