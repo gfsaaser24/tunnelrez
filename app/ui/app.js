@@ -778,14 +778,13 @@ function drawSpark() {
   const x0 = w - (pts.length - 1) * step;
   g.beginPath();
   pts.forEach((v, i) => (i ? g.lineTo(x0 + i * step, y(v)) : g.moveTo(x0, y(v))));
-  const grad = g.createLinearGradient(0, 0, 0, h);
-  grad.addColorStop(0, `color-mix(in srgb, ${color} 28%, transparent)`);
-  grad.addColorStop(1, `color-mix(in srgb, ${color} 0%, transparent)`);
+  // A flat, faint fill under the line (no gradient).
   g.save();
   g.lineTo(w, h);
   g.lineTo(x0, h);
   g.closePath();
-  g.fillStyle = grad;
+  g.globalAlpha = 0.12;
+  g.fillStyle = color;
   g.fill();
   g.restore();
   g.beginPath();
@@ -1427,6 +1426,8 @@ function makeMock() {
   (mods[scenario] ?? mods.idle)();
   return {
     invoke: async (cmd, args) => {
+      // Headless checks read this to see that each control called the app.
+      (window.mockCalls ??= []).push({ cmd, args });
       if (cmd === "get_snapshot") return S;
       if (cmd === "test_tv") return "app_not_open";
       if (cmd === "refresh_audio" && S.tv_speaker.can_check) {
