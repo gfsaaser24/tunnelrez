@@ -1,0 +1,86 @@
+{
+  "id": "2026-10-26-09",
+  "title": "hevc 1920x1080@60 NVIDIA NVENC native, 40 Mb/s (app log)",
+  "config": {
+    "codec": "hevc",
+    "resolution": "1920x1080",
+    "fps": 60,
+    "encoder": "NVIDIA NVENC native",
+    "requested_mbps": 40.0,
+    "configured_mbps": 40.0,
+    "network": "PC Wi-Fi 6 GHz 802.11ax, 2162/2162 Mb/s, signal 89 %",
+    "content": "",
+    "sender_build": "slipstream-send.exe (app 0.1.0)",
+    "receiver_build": "unknown"
+  },
+  "method": "App logger (Log switch), one sample per second, 120 s; TV-side STATS as the sender received them; the first seconds are start-up and are skipped in the summary.",
+  "summary": {
+    "seconds": 118,
+    "decoder": "OMX.MTK.VIDEO.DECODER.HEVC",
+    "fps_out": {
+      "median": 59.9,
+      "p95": 60.9,
+      "max": 60.9
+    },
+    "recv_mbps": {
+      "median": 40.0
+    },
+    "decode_ms_p50": {
+      "median": 5.5,
+      "p95": 5.8,
+      "max": 7.8
+    },
+    "decode_ms_p99": {
+      "median": 7.1,
+      "p95": 8.7,
+      "max": 15.7
+    },
+    "tv_latency_ms": {
+      "median": 9.1,
+      "max": 15.5,
+      "source": "est: latency (tv_clock) - capture_to_send - rtt/2"
+    },
+    "arrival_gaps_s": {
+      "median": 0.0,
+      "p95": 3.0,
+      "max": 13.0
+    },
+    "arrival_ms_max": {
+      "median": 20.9,
+      "p95": 48.1,
+      "max": 189.8
+    },
+    "decoder_wait_p99": {
+      "median": 0.3,
+      "p95": 1.0,
+      "max": 1.4
+    },
+    "dropped_total": 2,
+    "late_total": 2,
+    "rxq_dropped": 0,
+    "idr_requests_max": 0.0,
+    "gpu": {
+      "core_pct_avg": 27.0,
+      "encoder_pct_avg": 7.0,
+      "clock_mhz": "1440-2385",
+      "power_w": "22.408-31.373"
+    },
+    "pc": {
+      "capture_ms": 0.0,
+      "convert_ms": 0.3,
+      "encode_ms": 1.4,
+      "send_ms_p99": 0.2,
+      "capture_to_send_ms": 7.9,
+      "encoder_fps": 59.7,
+      "sent_mbps": 39.8,
+      "cpu_pct": 20.63,
+      "rtt_ms": 1.9,
+      "e2e_latency_ms": 17.6
+    }
+  },
+  "notes": "From the app log, 120 s",
+  "source": {
+    "log": "2026-10-26_23-27-48.runbook.json",
+    "sha256": "6118cb9dc842afef76ca584ed8c6a57cbdc7a4a89ce3f86ecfe6be8a17ab31e4"
+  }
+}

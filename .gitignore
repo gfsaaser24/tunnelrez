@@ -1,0 +1,24 @@
+target/
+**/build/
+.gradle/
+local.properties
+*.apk
+*.aab
+*.so
+jniLibs/
+receiver/tools/clips/
+receiver/tools/results/
+*.h264
+*.hevc
+*.ivf
+*.obu
+.env
+.env.*
+*.pem
+*.key
+adbkey
+adbkey.pub
+.DS_Store
+
+# make-kit output
+dist/

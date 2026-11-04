@@ -1,0 +1,37 @@
+name: release
+
+# On a v* tag: build the Windows installer, write SHA256SUMS and the release notes (tools/release.ps1), and keep them
+# as a workflow artifact. Nothing is published: the owner creates the GitHub release by hand (see tools/release.ps1).
+on:
+  push:
+    tags: ["v*"]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  installer:
+    runs-on: windows-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+      - name: Rust toolchain (rust-toolchain.toml)
+        run: rustup show active-toolchain
+      - name: The tag matches the version in app/Cargo.toml
+        if: startsWith(github.ref, 'refs/tags/v')
+        shell: pwsh
+        run: |
+          $m = Select-String -Path app/Cargo.toml -Pattern '^version\s*=\s*"([^"]+)"' | Select-Object -First 1
+          $v = $m.Matches[0].Groups[1].Value
+          if ("v$v" -ne "${{ github.ref_name }}") { throw "tag ${{ github.ref_name }} but app/Cargo.toml says $v" }
+      - name: Tauri CLI (PINNED: see docs/PINNED.md)
+        run: cargo install tauri-cli --version 2.12.4 --locked
+      - name: Installer, SHA256SUMS, release notes
+        shell: pwsh
+        run: ./tools/release.ps1 -Out dist/release
+      - uses: actions/upload-artifact@v4
+        with:
+          name: tunnelrez-release
+          path: dist/release/
+          if-no-files-found: error
