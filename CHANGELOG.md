@@ -3,7 +3,7 @@
 The product version is set once, in `app/Cargo.toml`; the installer, the tray app and the TV app take it from there.
 `tools/release.ps1` takes the release notes from the section of that version.
 
-## [0.3.0] - unreleased
+## [0.3.0] - 2026-11-04
 
 The first public release, under the new name **TunnelRez** ([tunnelrez.com](https://tunnelrez.com)).
 
@@ -21,6 +21,9 @@ The first public release, under the new name **TunnelRez** ([tunnelrez.com](http
 - Developer variables are `TUNNELREZ_*` (were `SLIPSTREAM_*`).
 
 ### Added
+
+- A new look for the tray panel: white and light-gray bands, one blue for Start/Stop and links, Inter bundled
+  (works offline), small 8px corners, large tabular latency/fps numbers; dark mode follows Windows.
 
 - A Windows installer (per user, no admin): `TunnelRez_<version>_x64-setup.exe`. It installs the app, the sender and
   the bundled drivers to `%LOCALAPPDATA%\Programs\TunnelRez`, adds a Start menu entry and an uninstaller, and
