@@ -22,3 +22,6 @@ adbkey.pub
 
 # make-kit output
 dist/
+
+# Website (its own repo)
+site/
