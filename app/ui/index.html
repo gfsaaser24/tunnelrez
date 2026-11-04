@@ -1,0 +1,290 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  <title>TunnelRez</title>
+  <link rel="stylesheet" href="app.css">
+</head>
+<body>
+  <main id="panel" class="panel" data-state="idle" aria-live="polite">
+
+    <!-- ============================================================ first run -->
+    <section id="setup" class="setup" hidden>
+      <div class="brand">
+        <img src="icons/app-64.png" alt="" width="20" height="20">
+        <span>TunnelRez</span>
+      </div>
+      <div class="setup-hero">
+        <div class="setup-art" aria-hidden="true">
+          <span class="glyph">&#xE7F8;</span>
+          <span class="beam"><i></i><i></i><i></i></span>
+          <span class="glyph big">&#xE7F4;</span>
+        </div>
+        <h1>Put your PC on the TV</h1>
+        <p class="sub">Use the TV as a second screen, or show this screen on it. Two quick steps.</p>
+      </div>
+      <ol class="steps">
+        <li>
+          <span class="step-n">1</span>
+          <div>
+            <strong>Open TunnelRez on your TV</strong>
+            <span class="sub">It shows the TV’s address on screen.</span>
+          </div>
+        </li>
+        <li>
+          <span class="step-n">2</span>
+          <div class="grow">
+            <label for="setup-host"><strong>Type the TV’s address</strong></label>
+            <div class="field-row">
+              <input id="setup-host" class="text" type="text" inputmode="url" spellcheck="false" autocomplete="off"
+                     placeholder="The TV’s IP address" aria-describedby="setup-result">
+              <button id="setup-test" class="btn" type="button">Test</button>
+            </div>
+            <div id="setup-result" class="result" role="status"></div>
+          </div>
+        </li>
+      </ol>
+      <button id="setup-done" class="btn accent wide" type="button" disabled>Continue</button>
+    </section>
+
+    <!-- ============================================================ main -->
+    <section id="main" class="main">
+      <header class="hero">
+        <div class="brand">
+          <img src="icons/app-64.png" alt="" width="20" height="20">
+          <span>TunnelRez</span>
+          <span id="chip" class="chip"><i class="dot"></i><span id="chip-text">Ready</span></span>
+          <button id="pin" class="icon-btn" type="button" aria-pressed="true" aria-label="Keep open"
+                  aria-describedby="pin-tip">
+            <span class="glyph" id="pin-glyph" aria-hidden="true">&#xE840;</span>
+            <span id="pin-tip" class="tip" role="tooltip">Keep open</span>
+          </button>
+        </div>
+        <div class="hero-body">
+          <h1 id="title">Ready to stream</h1>
+          <div id="metric" class="metric" hidden>
+            <span class="metric-lat"><span id="hero-lat" class="num">--</span><span class="unit">ms</span></span>
+            <span class="metric-fps"><span id="hero-fps" class="num">--</span><span class="unit">fps</span></span>
+          </div>
+          <p id="subtitle" class="sub">&nbsp;</p>
+        </div>
+        <div id="progress" class="progress" hidden><i></i></div>
+      </header>
+
+      <div id="notice" class="infobar warning" role="status" hidden>
+        <span class="glyph" aria-hidden="true">&#xE7BA;</span>
+        <span id="notice-text"></span>
+      </div>
+
+      <div id="gate" class="infobar warning" role="status" hidden>
+        <span class="glyph" aria-hidden="true">&#xE7BA;</span>
+        <div class="col grow">
+          <span id="gate-text"></span>
+          <div id="gate-store" class="store" hidden>
+            <span>Windows needs the HEVC codec for this encoder. NVENC native and the CPU encoder don’t need it.</span>
+            <span>Two versions exist. They are the same codec from Microsoft:</span>
+            <div class="store-item">
+              <span class="grow"><b>Free</b> – HEVC Video Extensions from Device Manufacturer. Made for PC makers to
+                preinstall. The Store may hide it or refuse to install it on some PCs.</span>
+              <button id="store-free" class="btn" type="button">Open in Store</button>
+            </div>
+            <div class="store-item">
+              <span class="grow"><b>$0.99</b> – HEVC Video Extensions. The normal Store version; always installs.</span>
+              <button id="store-paid" class="btn" type="button">Open in Store</button>
+            </div>
+            <span class="sub">Try the free one first. If the Store says it isn’t available, use the $0.99 one.</span>
+          </div>
+        </div>
+      </div>
+      <div id="gate-checking" class="checking" role="status" hidden>Checking which encoders work on this PC…</div>
+
+      <div class="actions">
+        <button id="primary" class="btn accent wide" type="button">
+          <span class="glyph" id="primary-glyph" aria-hidden="true">&#xEBC6;</span>
+          <span id="primary-text">Extend to TV</span>
+        </button>
+        <button id="secondary" class="btn" type="button" hidden></button>
+      </div>
+
+      <div class="group">
+        <div class="label" id="mode-label">Mode</div>
+        <div id="mode" class="seg" role="radiogroup" aria-labelledby="mode-label">
+          <button type="button" role="radio" data-value="extend"><span class="glyph" aria-hidden="true">&#xEBC6;</span>Extend</button>
+          <button type="button" role="radio" data-value="mirror"><span class="glyph" aria-hidden="true">&#xE8C8;</span>Mirror</button>
+          <i class="thumb" aria-hidden="true"></i>
+        </div>
+        <div id="monitor-row" class="monitor-row" hidden>
+          <div class="select" id="monitor" data-label="Screen to mirror"></div>
+        </div>
+      </div>
+
+      <div class="group">
+        <div class="label" id="picture-label">Picture</div>
+        <div id="picture" class="seg" role="radiogroup" aria-labelledby="picture-label"></div>
+      </div>
+
+      <section id="live" class="card live" aria-label="Live stats" hidden>
+        <div class="tiles">
+          <div class="tile"><span id="st-fps" class="num v">--</span><span class="k">fps</span></div>
+          <div class="tile"><span id="st-lat" class="num v">--</span><span class="k" id="st-lat-k">Latency</span></div>
+          <div class="tile"><span id="st-dec" class="num v">--</span><span class="k">Decode</span></div>
+          <div class="tile" id="st-mbps-tile"><span id="st-mbps" class="num v">--</span><span class="k" id="st-mbps-k">Mb/s</span></div>
+        </div>
+        <div id="rate-warn" class="infobar warning" role="status" hidden>
+          <span class="glyph" aria-hidden="true">&#xE7BA;</span>
+          <span id="rate-warn-text"></span>
+        </div>
+        <div id="audio-line" class="audio-line" role="status" hidden></div>
+        <div id="audio-dev-line" class="audio-line" role="status" hidden></div>
+        <div id="audio-sink-hint" class="hint" role="status" hidden>
+          <span class="glyph" aria-hidden="true">&#xE946;</span>
+          <span><span id="audio-sink-hint-text">Install the TV speaker for best results.</span>
+            <button id="audio-sink-install" class="link inline" type="button">Install</button></span>
+        </div>
+        <canvas id="spark" class="spark" height="40" aria-label="Latency, last minute" role="img"></canvas>
+      </section>
+
+      <div class="expander" id="advanced">
+        <button id="adv-head" class="expander-head" type="button" aria-expanded="false" aria-controls="adv-body">
+          <span class="glyph" aria-hidden="true">&#xE9E9;</span>
+          <span class="label-text">Advanced</span>
+          <span id="adv-summary" class="sub"></span>
+          <span class="glyph chev" aria-hidden="true">&#xE70D;</span>
+        </button>
+        <div id="adv-body" class="expander-body" hidden>
+          <div class="group">
+            <div class="label" id="codec-label">Codec</div>
+            <div id="codec" class="seg small" role="radiogroup" aria-labelledby="codec-label"></div>
+          </div>
+          <div class="group">
+            <div class="label" id="encoder-label">Encoder</div>
+            <div class="select" id="encoder" data-label="Encoder"></div>
+          </div>
+          <div class="group">
+            <div class="label-row">
+              <span class="label" id="bitrate-label">Bitrate</span>
+              <span class="label-end">
+                <span id="bitrate-value" class="num value"></span>
+                <button id="bitrate-default" class="pill" type="button" aria-pressed="false"
+                        title="Default: the rate for the picture (40 Mb/s at 1080p60, 100 Mb/s at 4K60)">Default</button>
+                <button id="bitrate-auto" class="pill" type="button" aria-pressed="false"
+                        title="Auto: the stream engine picks the rate, and simple scenes send less">Auto</button>
+              </span>
+            </div>
+            <input id="bitrate" class="slider" type="range" min="10" max="150" step="5" aria-labelledby="bitrate-label">
+            <div id="bitrate-hint" class="hint" role="status" hidden>
+              <span class="glyph" aria-hidden="true">&#xE946;</span>
+              <span id="bitrate-hint-text"></span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <footer class="foot">
+        <div class="row" id="tv-row">
+          <span class="glyph lead" aria-hidden="true">&#xE7F4;</span>
+          <div class="grow col">
+            <span class="k">Your TV</span>
+            <span id="tv-host" class="v"></span>
+          </div>
+          <button id="tv-change" class="btn subtle" type="button">Change</button>
+        </div>
+        <div class="row edit" id="tv-edit" hidden>
+          <div class="grow col">
+            <label class="k" for="tv-input">Your TV</label>
+            <div class="field-row">
+              <input id="tv-input" class="text" type="text" spellcheck="false" autocomplete="off" placeholder="TV address">
+              <button id="tv-test" class="btn" type="button">Test</button>
+              <button id="tv-save" class="btn accent" type="button">Save</button>
+            </div>
+            <div id="tv-result" class="result" role="status"></div>
+          </div>
+        </div>
+        <div class="row" id="test-row">
+          <span class="glyph lead" aria-hidden="true">&#xE714;</span>
+          <div class="grow col">
+            <span class="k" id="test-label">Test run</span>
+            <span id="test-state" class="v"></span>
+          </div>
+          <button id="test" class="btn" type="button" aria-describedby="test-state">Test</button>
+        </div>
+        <div id="test-result" class="result test-result" role="status"></div>
+        <div class="row" id="audio-row">
+          <span class="glyph lead" aria-hidden="true">&#xE767;</span>
+          <div class="grow col">
+            <span class="k" id="audio-label">Audio</span>
+            <span id="audio-state" class="v"></span>
+          </div>
+          <button id="audio" class="toggle" type="button" role="switch" aria-checked="true" aria-labelledby="audio-label"
+                  aria-describedby="audio-state"><i></i></button>
+        </div>
+        <div class="row" id="audio-tv-row">
+          <span class="glyph lead" aria-hidden="true">&#xE977;</span>
+          <div class="grow col">
+            <span class="k" id="audio-tv-label">Also play on PC</span>
+            <span id="audio-tv-state" class="v hint-line">With a virtual audio device the PC plays a copy; without one, off mutes the PC speakers while streaming</span>
+          </div>
+          <button id="audio-tv" class="toggle" type="button" role="switch" aria-checked="true" aria-labelledby="audio-tv-label"
+                  aria-describedby="audio-tv-state"><i></i></button>
+        </div>
+        <div class="row audio-dev-row" id="audio-dev-row">
+          <span class="glyph lead" aria-hidden="true">&#xE7F5;</span>
+          <div class="grow col">
+            <span class="k" id="audio-dev-label">Audio device</span>
+            <div class="select" id="audio-dev" data-label="Audio device"></div>
+            <span id="audio-dev-state" class="v hint-line" hidden></span>
+          </div>
+        </div>
+        <div class="row" id="tv-speaker-row">
+          <span class="glyph lead" aria-hidden="true">&#xE7F4;</span>
+          <div class="grow col">
+            <span class="k" id="tv-speaker-label">TV speaker</span>
+            <span id="tv-speaker-state" class="v"></span>
+          </div>
+          <button id="tv-speaker-check" class="btn" type="button" aria-describedby="tv-speaker-state" hidden>Check again</button>
+          <button id="tv-speaker-install" class="btn" type="button" aria-describedby="tv-speaker-state" hidden>Install TV speaker</button>
+        </div>
+        <div class="row" id="tv-monitor-row">
+          <span class="glyph lead" aria-hidden="true">&#xE7F4;</span>
+          <div class="grow col">
+            <span class="k" id="tv-monitor-label">TV monitor</span>
+            <span id="tv-monitor-state" class="v"></span>
+          </div>
+          <button id="tv-monitor-fix" class="btn" type="button" aria-describedby="tv-monitor-state" hidden>Repair</button>
+        </div>
+        <div class="row" id="log-row">
+          <span class="glyph lead" aria-hidden="true">&#xE9D9;</span>
+          <div class="grow col">
+            <span class="k" id="log-label">Log</span>
+            <span id="log-state" class="v"></span>
+          </div>
+          <button id="log-file" class="link" type="button" hidden>Open folder</button>
+          <button id="log" class="toggle" type="button" role="switch" aria-checked="false" aria-labelledby="log-label"
+                  aria-describedby="log-state"><i></i></button>
+        </div>
+        <div class="row log-opts" id="log-opts">
+          <div id="log-format" class="seg small" role="radiogroup" aria-label="Log file format"></div>
+          <button id="log-runbook" class="btn" type="button">Add to run book</button>
+        </div>
+        <div class="row log-content" id="log-content-row" hidden>
+          <input id="log-content" class="text" type="text" spellcheck="false" autocomplete="off" maxlength="200"
+                 placeholder="What was on screen (optional)" aria-label="What was on screen, for the run book">
+        </div>
+        <div id="log-result" class="result log-result" role="status"></div>
+        <div id="log-warn" class="result warn log-result" role="status"></div>
+        <div class="row">
+          <span class="glyph lead" aria-hidden="true">&#xE7E8;</span>
+          <label class="grow" for="autostart">Start with Windows</label>
+          <button id="autostart" class="toggle" type="button" role="switch" aria-checked="false"><i></i></button>
+        </div>
+        <div class="ver"><span id="version"></span><button id="quit" class="link" type="button">Quit</button></div>
+      </footer>
+    </section>
+
+    <div id="popup" class="popup" role="listbox" hidden></div>
+  </main>
+  <script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 320x180 TV banner: a PC monitor beaming to a TV, on a dark blue field. -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="320dp" android:height="180dp"
+    android:viewportWidth="320" android:viewportHeight="180">
+    <path android:fillColor="#0F1622" android:pathData="M0,0h320v180h-320z" />
+    <path android:fillColor="#16243A" android:pathData="M0,120h320v60h-320z" />
+    <!-- PC monitor -->
+    <path android:fillColor="#00000000" android:strokeColor="#9FB3C8" android:strokeWidth="6"
+        android:pathData="M40,52h76v50h-76z" />
+    <path android:fillColor="#9FB3C8" android:pathData="M72,102h12v14h-12zM60,116h36v6h-36z" />
+    <!-- signal arcs -->
+    <path android:fillColor="#00000000" android:strokeColor="#55BFFF" android:strokeWidth="6"
+        android:strokeLineCap="round" android:pathData="M136,62q14,15 0,30" />
+    <path android:fillColor="#00000000" android:strokeColor="#55BFFF" android:strokeWidth="6"
+        android:strokeLineCap="round" android:pathData="M152,52q24,25 0,50" />
+    <path android:fillColor="#00000000" android:strokeColor="#55BFFF" android:strokeWidth="6"
+        android:strokeLineCap="round" android:pathData="M168,42q34,35 0,70" />
+    <!-- TV -->
+    <path android:fillColor="#55BFFF" android:pathData="M200,38h88v62h-88z" />
+    <path android:fillColor="#0F1622" android:pathData="M206,44h76v50h-76z" />
+    <path android:fillColor="#55BFFF" android:pathData="M226,56l28,13l-28,13z" />
+    <path android:fillColor="#9FB3C8" android:pathData="M214,100h8v14h-8zM266,100h8v14h-8z" />
+</vector>

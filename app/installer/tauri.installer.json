@@ -1,0 +1,24 @@
+{
+  "$schema": "https://schema.tauri.app/config/2",
+  "bundle": {
+    "active": true,
+    "targets": ["nsis"],
+    "publisher": "TunnelRez",
+    "homepage": "https://tunnelrez.com",
+    "shortDescription": "Your PC on your Android TV as a real second monitor",
+    "longDescription": "TunnelRez turns an Android TV into a low-latency second monitor for a Windows PC: native NVENC capture and encode, a native Rust TV app, audio on the TV.",
+    "icon": ["icons/icon.ico", "icons/icon.png"],
+    "externalBin": ["binaries/tunnelrez-send"],
+    "resources": {
+      "../drivers/parsec-vdd/": "drivers/parsec-vdd/",
+      "../drivers/steam-streaming-speakers/": "drivers/steam-streaming-speakers/"
+    },
+    "windows": {
+      "nsis": {
+        "installMode": "currentUser",
+        "installerHooks": "installer/hooks.nsh",
+        "displayLanguageSelector": false
+      }
+    }
+  }
+}

@@ -1,0 +1,20 @@
+name: drivers
+
+on:
+  pull_request:
+    paths: ["drivers/**", ".gitattributes", ".github/workflows/drivers.yml"]
+  push:
+    branches: [main]
+    paths: ["drivers/**", ".gitattributes", ".github/workflows/drivers.yml"]
+
+jobs:
+  hashes:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Bundled driver files match their SHA-256
+        working-directory: drivers/steam-streaming-speakers
+        run: sha256sum -c SHA256SUMS
+      - name: Bundled Parsec installer matches its SHA-256
+        working-directory: drivers/parsec-vdd
+        run: sha256sum -c SHA256SUMS

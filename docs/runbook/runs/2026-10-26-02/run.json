@@ -1,0 +1,69 @@
+{
+  "id": "2026-10-26-02",
+  "title": "HEVC 4K60, encoder Auto (picked native), 150 Mb/s",
+  "config": {
+    "codec": "hevc",
+    "resolution": "3840x2160",
+    "fps": 60,
+    "encoder": "native NVENC",
+    "requested_mbps": 150.0,
+    "configured_mbps": 150.0,
+    "network": "PC Wi-Fi 6E 6 GHz, TV Wi-Fi 5 GHz (router: WMM Power Save off)",
+    "content": "motion60 page, full screen on the TV monitor",
+    "sender_build": "main 11aea0d",
+    "receiver_build": "main c2fb477"
+  },
+  "method": "Real TV over the LAN, one sender, 60 s, TV-side STATS once per second; the first seconds are start-up and are skipped in the summary.",
+  "summary": {
+    "seconds": 58,
+    "decoder": "OMX.MTK.VIDEO.DECODER.HEVC",
+    "fps_out": {
+      "median": 59.9,
+      "p95": 60.9,
+      "max": 60.9
+    },
+    "recv_mbps": {
+      "median": 149.7
+    },
+    "decode_ms_p50": {
+      "median": 12.6,
+      "p95": 12.9,
+      "max": 13.1
+    },
+    "decode_ms_p99": {
+      "median": 14.9,
+      "p95": 16.2,
+      "max": 17.1
+    },
+    "tv_latency_ms": {
+      "median": 13.1,
+      "max": 13.5
+    },
+    "arrival_gaps_s": {
+      "median": 0.0,
+      "p95": 1.0,
+      "max": 1.0
+    },
+    "arrival_ms_max": {
+      "median": 22.2,
+      "p95": 57.3,
+      "max": 64.8
+    },
+    "decoder_wait_p99": {
+      "median": 0.8,
+      "p95": 1.3,
+      "max": 1.5
+    },
+    "dropped_total": 9,
+    "late_total": 4,
+    "rxq_dropped": 5,
+    "idr_requests_max": 0.0,
+    "gpu": {
+      "core_pct_avg": 37.0,
+      "encoder_pct_avg": 25.0,
+      "clock_mhz": "1185-1897",
+      "power_w": "24.17-32.57"
+    }
+  },
+  "notes": "Auto chose native NVENC"
+}

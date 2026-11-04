@@ -1,0 +1,14 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>TunnelRez test page</title>
+  <!-- The run book's moving test page ("motion60 test page"): drawn at most 60 times per second, so the page does not
+       load the GPU at the refresh rate of the fastest monitor. The app opens it full screen on the TV screen (Test). -->
+  <style>html, body { margin: 0; background: #000; overflow: hidden; cursor: none; } canvas { display: block; }</style>
+</head>
+<body>
+  <canvas id="c"></canvas>
+  <script src="motion60.js"></script>
+</body>
+</html>

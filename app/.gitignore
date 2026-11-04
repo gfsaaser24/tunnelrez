@@ -1,0 +1,4 @@
+/target
+/gen
+# tools/build-installer.ps1 copies the sender here (Tauri externalBin)
+/binaries
