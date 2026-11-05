@@ -3,6 +3,12 @@
 The product version is set once, in `app/Cargo.toml`; the installer, the tray app and the TV app take it from there.
 `tools/release.ps1` takes the release notes from the section of that version.
 
+## [Unreleased]
+
+### Added
+
+- PolyForm Noncommercial License 1.0.0 (`LICENSE`).
+
 ## [0.3.0] - 2026-11-04
 
 The first public release, under the new name **TunnelRez** ([tunnelrez.com](https://tunnelrez.com)).

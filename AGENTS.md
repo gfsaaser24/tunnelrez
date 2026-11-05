@@ -18,6 +18,7 @@ Separate crates, each with its own `Cargo.lock` (committed) and `target/`. No wo
 | `tools/` | `build-installer.ps1`, `release.ps1`, `make-kit.ps1` (+ `kit/install.ps1`), `runbook/add-run.ps1`, the audio matrix scripts. | PowerShell |
 | `docs/` | `APP-SPEC.md`, `ROADMAP.md`, `REMOTE-SPEC.md` (coming), `PINNED.md`, `AGENT-SETUP.md`, `runbook/` (every real-TV run). | docs |
 | `PROTOCOL.md` | The wire protocol (magic `LRT0`, port 7878) and the names that stay after the rename. | docs |
+| `LICENSE` | PolyForm Noncommercial License 1.0.0 | license |
 
 ## Build and test
 
