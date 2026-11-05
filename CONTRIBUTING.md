@@ -13,3 +13,6 @@ Short version:
 5. Pinned versions ([`docs/PINNED.md`](docs/PINNED.md)) change only in their own pull request, with the reason.
 
 Security problems: see [`SECURITY.md`](SECURITY.md), not a public issue.
+
+The project is licensed under the [PolyForm Noncommercial License 1.0.0](https://polyformproject.org/licenses/noncommercial/1.0.0/).
+See [`LICENSE`](LICENSE).

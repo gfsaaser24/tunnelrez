@@ -24,6 +24,7 @@
 [![Run book](https://img.shields.io/badge/every_run-logged-lightgrey?style=flat-square)](docs/runbook/README.md)
 [![Installer](https://img.shields.io/badge/installer-per_user,_no_admin-0078D4?style=flat-square&logo=windows&logoColor=white)](#quick-start)
 [![Remote](https://img.shields.io/badge/remote-coming-lightgrey?style=flat-square)](docs/REMOTE-SPEC.md)
+[![License](https://img.shields.io/badge/license-PolyForm%20Noncommercial%201.0.0-blue?style=flat-square)](LICENSE)
 
 <img src="docs/img/panel-streaming-tunnelrez.png" alt="TunnelRez panel streaming 4K60 at 18 ms (mock data)" width="360">
 
@@ -230,6 +231,14 @@ Details: [`docs/ROADMAP.md`](docs/ROADMAP.md). Changes per release: [`CHANGELOG.
 Read [`CONTRIBUTING.md`](CONTRIBUTING.md) and [`AGENTS.md`](AGENTS.md) (the layout, how to build and test every part,
 the rules). Setting up a new PC and TV from zero: [`docs/AGENT-SETUP.md`](docs/AGENT-SETUP.md). Security issues:
 [`SECURITY.md`](SECURITY.md). Pinned versions and why: [`docs/PINNED.md`](docs/PINNED.md).
+
+## License
+
+TunnelRez is licensed under the [PolyForm Noncommercial License 1.0.0](https://polyformproject.org/licenses/noncommercial/1.0.0/).
+The full terms are in [`LICENSE`](LICENSE).
+
+Personal and other noncommercial use is allowed. Commercial use, sale, or
+repackaging TunnelRez as a product is not.
 
 ---
 
