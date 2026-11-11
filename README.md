@@ -179,17 +179,36 @@ on what the app does, so Defender does not name the cause. These are the likely 
 
 It is most likely when the capture restarts several times in a row, because each restart does the above again.
 
-To get the app back, open PowerShell **as administrator**. Add the exclusion first, then restore:
+To get the app back:
 
-```powershell
-Add-MpPreference -ExclusionPath "$env:LOCALAPPDATA\Programs\TunnelRez"
-& "$env:ProgramFiles\Windows Defender\MpCmdRun.exe" -Restore -Name 'Behavior:Win32/DefenseEvasion.A!ml' -All
-```
+1. Find the install folder. In a normal PowerShell window (**not** as administrator), run
+   `"$env:LOCALAPPDATA\Programs\TunnelRez"` and copy the path it prints. Do this first: when the admin prompt is
+   answered with another account, `$env:LOCALAPPDATA` is that account's folder, not yours.
+2. Open PowerShell **as administrator**, add the exclusion for that folder, and list what Defender holds:
+
+   ```powershell
+   $dir = 'C:\Users\<you>\AppData\Local\Programs\TunnelRez'   # the path from step 1
+   $mp  = "$env:ProgramFiles\Windows Defender\MpCmdRun.exe"
+   Add-MpPreference -ExclusionPath $dir
+   & $mp -Restore -ListAll
+   ```
+
+3. Restore only TunnelRez. A threat name alone does not prove that an item is this false positive, so restore by
+   file path:
+
+   ```powershell
+   & $mp -Restore -FilePath "$dir\tunnelrez.exe"
+   ```
+
+   Then run the installer again: it puts back the shortcuts and the entry in Apps. Only when the list in step 2
+   shows nothing but TunnelRez items under `Behavior:Win32/DefenseEvasion.A!ml`, this one command restores them
+   all instead: `& $mp -Restore -Name 'Behavior:Win32/DefenseEvasion.A!ml' -All`. Leave every other item in
+   quarantine.
 
 With the exclusion, Defender no longer scans that folder: add it only when you trust your copy of TunnelRez (you
 built it, or its SHA-256 matches the release's `SHA256SUMS`). For a kit or your own build, exclude that folder
-instead. To take the exclusion away: `Remove-MpPreference -ExclusionPath "$env:LOCALAPPDATA\Programs\TunnelRez"`.
-The installer never changes Defender settings for you.
+instead. To take the exclusion away, as administrator: `Remove-MpPreference -ExclusionPath $dir` (the same full
+path). The installer never changes Defender settings for you.
 
 ### Coming next: remote
 
