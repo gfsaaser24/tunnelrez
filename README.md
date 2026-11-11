@@ -100,6 +100,11 @@ That is the whole pipeline: capture, encode, Wi-Fi, decode and display.
 old SlipStream kit. Build it yourself with `.\tools\build-installer.ps1` (the file lands in `dist\`). The installer is
 not code-signed yet, so Windows SmartScreen asks once ("More info" > "Run anyway").
 
+> **Notice: Microsoft Defender can quarantine TunnelRez (a false positive).** While a stream starts, Defender may
+> report `Behavior:Win32/DefenseEvasion.A!ml` and remove `tunnelrez.exe`, its Start menu and desktop shortcuts and
+> its entry in Apps. TunnelRez is not malware; see [If Defender quarantines TunnelRez](#if-defender-quarantines-tunnelrez)
+> for the cause and the fix.
+
 The uninstaller unplugs the TV monitor, puts your sound devices back and removes the TV speaker only if TunnelRez
 installed it. It removes the Parsec display driver only if you tick that box.
 
@@ -158,6 +163,33 @@ The TV app has a new package name, `dev.tunnelrez.tv` (it was `dev.slipstream.tv
    `adb -s $env:TV_HOST uninstall dev.slipstream.tv`.
 
 Its tuning (`debug.lrt.*` properties) and the `LRT` log tag are the same for both apps, so nothing to redo.
+
+### If Defender quarantines TunnelRez
+
+Microsoft Defender can report `Behavior:Win32/DefenseEvasion.A!ml` on `tunnelrez.exe` while a stream starts, and
+quarantine the app, its shortcuts and its entry in Apps. This is a false positive. It is a machine-learning verdict
+on what the app does, so Defender does not name the cause. These are the likely ones:
+
+- For a steady 60 fps, the sender sets a 1 ms timer inside the FFmpeg process it starts (a thread that calls
+  `timeBeginPeriod(1)`). Starting a thread in another process is also a malware technique.
+- Windows picks the GPU per exe file. So the sender keeps renamed copies of itself and of FFmpeg in the install
+  folder (`tunnelrez-probe-igpu.exe`, `tunnelrez-probe-dgpu.exe`, `ffmpeg-igpu.exe`, `ffmpeg-dgpu.exe`) and writes
+  a GPU preference for each under `HKCU\Software\Microsoft\DirectX\UserGpuPreferences`.
+- The files are not code-signed yet.
+
+It is most likely when the capture restarts several times in a row, because each restart does the above again.
+
+To get the app back, open PowerShell **as administrator**. Add the exclusion first, then restore:
+
+```powershell
+Add-MpPreference -ExclusionPath "$env:LOCALAPPDATA\Programs\TunnelRez"
+& "$env:ProgramFiles\Windows Defender\MpCmdRun.exe" -Restore -Name 'Behavior:Win32/DefenseEvasion.A!ml' -All
+```
+
+With the exclusion, Defender no longer scans that folder: add it only when you trust your copy of TunnelRez (you
+built it, or its SHA-256 matches the release's `SHA256SUMS`). For a kit or your own build, exclude that folder
+instead. To take the exclusion away: `Remove-MpPreference -ExclusionPath "$env:LOCALAPPDATA\Programs\TunnelRez"`.
+The installer never changes Defender settings for you.
 
 ### Coming next: remote
 
