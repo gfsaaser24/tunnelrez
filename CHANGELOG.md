@@ -3,6 +3,16 @@
 The product version is set once, in `app/Cargo.toml`; the installer, the tray app and the TV app take it from there.
 `tools/release.ps1` takes the release notes from the section of that version.
 
+## [Unreleased]
+
+### Known issues
+
+- **Microsoft Defender can quarantine TunnelRez 0.3.0 (a false positive).** While a stream starts, Defender may
+  report `Behavior:Win32/DefenseEvasion.A!ml` and remove `tunnelrez.exe`, its shortcuts and its entry in Apps. The
+  app itself did not change. The likely causes (the 1 ms timer set inside FFmpeg, the per-GPU copies of the exes,
+  no code signature) and the fix (a Defender exclusion for the install folder, then a restore) are in the README,
+  "If Defender quarantines TunnelRez".
+
 ## [0.3.0] - 2026-11-04
 
 The first public release, under the new name **TunnelRez** ([tunnelrez.com](https://tunnelrez.com)).

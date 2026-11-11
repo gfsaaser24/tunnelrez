@@ -124,6 +124,15 @@ cargo ndk -t armeabi-v7a -P 26 clippy --all-targets -- -D warnings
   Parsec adapter restarts (Device Manager, or reboot). Unplugging the monitor does not apply it. Repair restarts
   the adapter, then checks the real GPU.
 
+- **Defender's behavior verdict on the GPU wiring.** Microsoft Defender has quarantined `tunnelrez.exe` as
+  `Behavior:Win32/DefenseEvasion.A!ml` during a burst of capture restarts (seen once, on 0.3.0). The verdict names
+  no cause; the likely ones are `high_res_timer_child` (`CreateRemoteThread` into the FFmpeg child, once per
+  spawn, `sender/src/winutil.rs`), the hardlinked per-GPU exe copies with their `UserGpuPreferences` values
+  (`sender/src/tools.rs`), and unsigned files. Both are on purpose: keep them unless the owner says otherwise. Do
+  not make the installer or the app add a Defender exclusion or change any security setting; the user does that
+  (README, "If Defender quarantines TunnelRez"). Before you add another cross-process call, a self-copy or a
+  retry loop that respawns FFmpeg, think of this.
+
 ## Where the logs are
 
 | What | Where |
