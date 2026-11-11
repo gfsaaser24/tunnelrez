@@ -187,7 +187,7 @@ To get the app back:
 2. Open PowerShell **as administrator**, add the exclusion for that folder, and list what Defender holds:
 
    ```powershell
-   $dir = 'C:\Users\<you>\AppData\Local\Programs\TunnelRez'   # the path from step 1
+   $dir = 'C:\Users\<user>\AppData\Local\Programs\TunnelRez'   # the path from step 1
    $mp  = "$env:ProgramFiles\Windows Defender\MpCmdRun.exe"
    Add-MpPreference -ExclusionPath $dir
    & $mp -Restore -ListAll
